@@ -8,6 +8,7 @@ This GUI application logs into your Instagram account, fetches your follower and
 *   Logs into Instagram using your credentials (entered in the app).
 *   Handles 2-Factor Authentication (2FA) via a pop-up prompt.
 *   Saves login sessions (`<username>.session` file) to avoid repeated logins.
+*   Handles expired/invalid sessions by prompting for password.
 *   Fetches your followers and the accounts you follow (followees).
 *   Displays status updates and results directly in the app window.
 *   Saves the list of non-followers (as profile URLs) to `not_following_back.txt`.
@@ -51,12 +52,15 @@ There are two ways to use this tool:
 
 **Using the Application:**
 
-1.  Enter your Instagram **Username** and **Password** in the respective fields.
-2.  Click the **"Find Non-Followers"** button.
-3.  The application will display status messages in the text box below (e.g., "Logging in...", "Fetching followers...").
-4.  If **2-Factor Authentication** is required, a pop-up window will appear asking for your code.
-5.  Once the process is complete, the accounts that don't follow you back will be listed in the status box.
-6.  The full list of profile URLs for non-followers will also be saved to `not_following_back.txt` in the same directory as the application.
+1.  Enter your Instagram **Username**.
+2.  The application will check if a saved session file exists for that username.
+    *   If a session **is found**, the password field will be disabled. Click **"Find Non-Followers (Use Session)"**.
+    *   If a session **is not found**, enter your **Password** and click **"Find Non-Followers"**.
+3.  The application will display status messages in the text box below.
+4.  If you are using a session and it has **expired or is invalid**, you will be prompted to enter your password and click the button again.
+5.  If **2-Factor Authentication** is required, a pop-up window will appear asking for your code.
+6.  Once the process is complete, the accounts that don't follow you back will be listed in the status box.
+7.  The full list of profile URLs for non-followers will also be saved to `not_following_back.txt` in the same directory as the application.
 
 ## Output File
 

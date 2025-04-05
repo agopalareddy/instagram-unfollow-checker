@@ -7,22 +7,21 @@ import queue
 ctk.set_appearance_mode("System")  # Modes: "System" (default), "Dark", "Light"
 ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "green", "dark-blue"
 
-# Constants for collapsed/expanded log height
-LOG_COLLAPSED_HEIGHT = 60
-LOG_EXPANDED_HEIGHT = 250 # Adjust as needed
+# Fixed height for the log textbox
+LOG_FIXED_HEIGHT = 250 # Adjust as needed
 
 class InstagramApp(ctk.CTk):
     def __init__(self):
         super().__init__()
 
         self.title("Instagram Unfollow Checker")
-        # Increased initial height slightly to accommodate checkbox
-        self.geometry("500x650")
+        # Adjusted height for removed checkbox
+        self.geometry("500x600")
 
         # Configure grid layout
         self.grid_columnconfigure(1, weight=1)
-        # Give row 5 (textbox) the weight for expansion
-        self.grid_rowconfigure(5, weight=1)
+        # Give row 4 (textbox) the weight for expansion
+        self.grid_rowconfigure(4, weight=1)
 
         # --- Variables ---
         self.username_var = ctk.StringVar()
@@ -43,14 +42,10 @@ class InstagramApp(ctk.CTk):
         self.run_button.grid(row=2, column=0, columnspan=2, padx=20, pady=10)
 
         self.status_label = ctk.CTkLabel(self, text="Status:")
-        self.status_label.grid(row=3, column=0, padx=20, pady=(10, 0), sticky="w")
+        self.status_label.grid(row=3, column=0, columnspan=2, padx=20, pady=(10, 0), sticky="w") # Span label
 
-        # Checkbox for log expansion
-        self.log_expand_checkbox = ctk.CTkCheckBox(self, text="Show Full Log", command=self.toggle_log_height)
-        self.log_expand_checkbox.grid(row=4, column=0, columnspan=2, padx=20, pady=(5, 0), sticky="w")
-
-        self.status_textbox = ctk.CTkTextbox(self, state="disabled", wrap="word", height=LOG_COLLAPSED_HEIGHT)
-        self.status_textbox.grid(row=5, column=0, columnspan=2, padx=20, pady=(0, 20), sticky="nsew")
+        self.status_textbox = ctk.CTkTextbox(self, state="disabled", wrap="word", height=LOG_FIXED_HEIGHT)
+        self.status_textbox.grid(row=4, column=0, columnspan=2, padx=20, pady=(0, 20), sticky="nsew") # Textbox now in row 4
 
         # --- Threading and Queue ---
         self.message_queue = queue.Queue()
@@ -71,15 +66,6 @@ class InstagramApp(ctk.CTk):
         else:
             self.password_entry.configure(state="normal", placeholder_text="Enter password")
             self.run_button.configure(text="Find Non-Followers")
-
-    def toggle_log_height(self):
-        """Toggles the height of the status textbox based on the checkbox."""
-        if self.log_expand_checkbox.get():
-            self.status_textbox.configure(height=LOG_EXPANDED_HEIGHT)
-        else:
-            self.status_textbox.configure(height=LOG_COLLAPSED_HEIGHT)
-        # Force layout update if necessary (might not be strictly needed)
-        self.update_idletasks()
 
     def log_message(self, message):
         """Adds a message to the queue for safe GUI updates."""
@@ -149,8 +135,6 @@ class InstagramApp(ctk.CTk):
         self.log_message("\n-- Starting check --")
         self.set_ui_state("disabled")
 
-        # Clear previous results only if log is collapsed (looks cleaner)
-        # if not self.log_expand_checkbox.get():
         # Simplification: Always clear for a new run
         self.status_textbox.configure(state="normal")
         self.status_textbox.delete("1.0", "end")
@@ -194,18 +178,14 @@ class InstagramApp(ctk.CTk):
             # --- Login (if session failed, or wasn't attempted, or password was provided) ---
             if not logged_in:
                 if session_load_attempted:
-                    # This case should be handled by request_password_for_failed_session returning above
-                    # If we reach here somehow, it's an unexpected state.
                      self.log_message("Internal Error: Login flow reached unexpectedly after session failure.")
                      self.after(0, self.set_ui_state, "normal")
                      return
                 elif not password:
-                     # Should only happen if session file didn't exist and user clicked button anyway
                      self.log_message("Error: No session found and no password provided.")
                      self.after(0, self.set_ui_state, "normal") # Re-enable UI
                      return
 
-                # Proceed with password login
                 self.log_message("Logging in with password...")
                 try:
                     L.login(username, password)
@@ -278,9 +258,8 @@ class InstagramApp(ctk.CTk):
         except Exception as e_main:
             self.log_message(f"\nAn unexpected error occurred: {e_main}")
             import traceback
-            self.log_message(traceback.format_exc()) # Log full traceback for debugging
+            self.log_message(traceback.format_exc())
         finally:
-            # Re-enable UI elements in the main thread if not already handled by session failure
              if 'logged_in' not in locals() or logged_in or not session_load_attempted:
                 self.after(0, self.set_ui_state, "normal")
 
