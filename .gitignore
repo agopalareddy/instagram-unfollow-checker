@@ -1,3 +1,6 @@
 .env
 *.session
-not_following_back.txt 
+not_following_back.txt
+build/
+dist/
+*.spec 
