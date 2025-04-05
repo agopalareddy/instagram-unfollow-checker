@@ -4,7 +4,7 @@ This script logs into your Instagram account, fetches your follower and followin
 
 ## Features
 
-*   Logs into Instagram using your credentials.
+*   Logs into Instagram using your credentials (prompts for username/password).
 *   Handles 2-Factor Authentication (2FA).
 *   Saves login sessions to avoid repeated logins.
 *   Fetches your followers and the accounts you follow (followees).
@@ -13,44 +13,49 @@ This script logs into your Instagram account, fetches your follower and followin
 
 ## Prerequisites
 
-*   Python 3.x
-*   An Instagram account (with username and password)
+*   Python 3.x (if running from source)
+*   An Instagram account
 
-## Setup
+## Installation & Setup
 
-1.  **Clone the repository:**
-    ```bash
-    git clone <repository-url> # Replace <repository-url> after creating the repo
-    cd <repository-directory>
-    ```
+There are two ways to use this tool:
 
-2.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
+1.  **Download the Executable (Recommended for most users):**
+    *   Go to the [Releases page](https://github.com/agopalareddy/instagram-unfollow-checker/releases/tag/v1.1.0) of this repository.
+    *   Download the `main.exe` file (or the appropriate executable for your OS if others are provided).
+    *   Place the downloaded executable in a folder of your choice.
+    *   No further installation (like Python or dependencies) is needed.
 
-3.  **Create and configure the `.env` file:**
-    *   Rename or copy the `.env.example` file (if provided) to `.env`.
-    *   Alternatively, create a new file named `.env` in the project root.
-    *   Add your Instagram credentials:
-        ```dotenv
-        INSTAGRAM_USERNAME=your_instagram_username
-        INSTAGRAM_PASSWORD=your_instagram_password
+2.  **Run from Source (For developers or if the executable doesn't work):**
+    *   **Clone the repository:**
+        ```bash
+        git clone <repository-url> # Replace <repository-url>
+        cd <repository-directory>
         ```
-    **Important:** The `.env` file is included in `.gitignore` to prevent accidental commit of your credentials.
+    *   **Install dependencies:**
+        ```bash
+        pip install -r requirements.txt
+        ```
 
 ## Usage
 
-Run the script from your terminal:
+1.  **If using the Executable:**
+    *   Double-click `main.exe` (or run it from your terminal/command prompt).
 
-```bash
-python main.py
-```
+2.  **If running from Source:**
+    *   Run the script from your terminal:
+        ```bash
+        python main.py
+        ```
 
-*   The first time you run it, you might be prompted for your 2FA code.
-*   After successful login, a session file (`<your_username>.session`) will be created to speed up future logins.
-*   The script will fetch follower/following data (this might take some time depending on the number of accounts).
-*   Finally, it will print the accounts that don't follow you back to the console and save their profile URLs in the `not_following_back.txt` file.
+**When you run the application:**
+
+*   You will be prompted to enter your Instagram username and password directly in the terminal.
+    *   **Note:** Your password input will be hidden for security.
+*   The first time you log in successfully, you might be asked for a 2-Factor Authentication (2FA) code if you have it enabled.
+*   After a successful login, a session file (`<your_username>.session`) will be created in the same directory as the application. This helps speed up future logins.
+*   The script will fetch follower/following data (this might take some time).
+*   Finally, it will print the accounts that don't follow you back to the console and save their profile URLs in the `not_following_back.txt` file (also created in the same directory).
 
 ## Output File
 
