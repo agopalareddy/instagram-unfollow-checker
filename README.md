@@ -23,7 +23,7 @@ This GUI application logs into your Instagram account, fetches your follower and
 There are two ways to use this tool:
 
 1.  **Download the Executable (Recommended for most users):**
-    *   Go to the [Releases page](https://github.com/agopalareddy/instagram-unfollow-checker/releases/tag/v1.1.0) of this repository.
+    *   Go to the [Releases page](https://github.com/agopalareddy/instagram-unfollow-checker/releases/tag/v2.1.0) of this repository.
     *   Download the `.exe` file (or the appropriate executable for your OS if others are provided).
     *   Place the downloaded executable in a folder of your choice.
     *   No further installation (like Python or dependencies) is needed.
