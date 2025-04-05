@@ -1,20 +1,21 @@
 # Instagram Unfollow Checker
 
-This script logs into your Instagram account, fetches your follower and following lists, and identifies accounts you follow that do not follow you back.
+This GUI application logs into your Instagram account, fetches your follower and following lists, and identifies accounts you follow that do not follow you back.
 
 ## Features
 
-*   Logs into Instagram using your credentials (prompts for username/password).
-*   Handles 2-Factor Authentication (2FA).
-*   Saves login sessions to avoid repeated logins.
+*   **Modern User Interface:** Easy-to-use graphical interface.
+*   Logs into Instagram using your credentials (entered in the app).
+*   Handles 2-Factor Authentication (2FA) via a pop-up prompt.
+*   Saves login sessions (`<username>.session` file) to avoid repeated logins.
 *   Fetches your followers and the accounts you follow (followees).
-*   Compares the lists to find accounts you follow that don't follow you back.
-*   Saves the list of these accounts (as profile URLs) to `not_following_back.txt`.
+*   Displays status updates and results directly in the app window.
+*   Saves the list of non-followers (as profile URLs) to `not_following_back.txt`.
 
 ## Prerequisites
 
-*   Python 3.x (if running from source)
-*   An Instagram account
+*   An Instagram account.
+*   (Optional) Python 3.x if running from source.
 
 ## Installation & Setup
 
@@ -22,11 +23,11 @@ There are two ways to use this tool:
 
 1.  **Download the Executable (Recommended for most users):**
     *   Go to the [Releases page](https://github.com/agopalareddy/instagram-unfollow-checker/releases/tag/v1.1.0) of this repository.
-    *   Download the `main.exe` file (or the appropriate executable for your OS if others are provided).
+    *   Download the `.exe` file (or the appropriate executable for your OS if others are provided).
     *   Place the downloaded executable in a folder of your choice.
     *   No further installation (like Python or dependencies) is needed.
 
-2.  **Run from Source (For developers or if the executable doesn't work):**
+2.  **Run from Source (For developers):**
     *   **Clone the repository:**
         ```bash
         git clone <repository-url> # Replace <repository-url>
@@ -40,7 +41,7 @@ There are two ways to use this tool:
 ## Usage
 
 1.  **If using the Executable:**
-    *   Double-click `main.exe` (or run it from your terminal/command prompt).
+    *   Double-click the downloaded application file (`.exe` on Windows).
 
 2.  **If running from Source:**
     *   Run the script from your terminal:
@@ -48,18 +49,28 @@ There are two ways to use this tool:
         python main.py
         ```
 
-**When you run the application:**
+**Using the Application:**
 
-*   You will be prompted to enter your Instagram username and password directly in the terminal.
-    *   **Note:** Your password input will be hidden for security.
-*   The first time you log in successfully, you might be asked for a 2-Factor Authentication (2FA) code if you have it enabled.
-*   After a successful login, a session file (`<your_username>.session`) will be created in the same directory as the application. This helps speed up future logins.
-*   The script will fetch follower/following data (this might take some time).
-*   Finally, it will print the accounts that don't follow you back to the console and save their profile URLs in the `not_following_back.txt` file (also created in the same directory).
+1.  Enter your Instagram **Username** and **Password** in the respective fields.
+2.  Click the **"Find Non-Followers"** button.
+3.  The application will display status messages in the text box below (e.g., "Logging in...", "Fetching followers...").
+4.  If **2-Factor Authentication** is required, a pop-up window will appear asking for your code.
+5.  Once the process is complete, the accounts that don't follow you back will be listed in the status box.
+6.  The full list of profile URLs for non-followers will also be saved to `not_following_back.txt` in the same directory as the application.
 
 ## Output File
 
-The `not_following_back.txt` file will contain a list of Instagram profile URLs, one per line, for the accounts you follow that do not follow you back. You can often Alt+Click (or Cmd+Click on macOS) these URLs in modern text editors/terminals to open them directly in your browser.
+The `not_following_back.txt` file will be created or updated in the same directory where you run the application. It contains a list of Instagram profile URLs, one per line, for the accounts you follow that do not follow you back.
+
+## Data Safety and Privacy
+
+*   **Credentials:** Your Instagram username and password are used *only* to log in to Instagram via the `instaloader` library. They are required by Instagram for accessing your follower/following lists.
+*   **Storage:**
+    *   Login credentials (username/password) are **never** stored permanently by this application.
+    *   A **session file** (`<your_username>.session`) is saved locally on your device after a successful login. This file contains session cookies provided by Instagram, allowing the application to resume your session later without needing your password again. It helps avoid repeated logins and potential security flags from Instagram. This file is stored only on your computer.
+    *   The list of non-followers is saved to `not_following_back.txt` locally on your device.
+*   **Transmission:** Your credentials and session data are sent *only* to Instagram's servers as part of the standard login and data fetching process managed by the `instaloader` library. No credential or personal data is sent to any other third party or server.
+*   **Privacy:** All operations occur locally on your machine. Your follower lists, following lists, and the resulting list of non-followers remain private on your computer.
 
 ## Disclaimer
 
