@@ -16,7 +16,7 @@ jobs:
       matrix:
         # Define OS and corresponding asset name parts
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-20.04
             asset_name_part: Linux
           - os: macos-latest
             asset_name_part: macOS
