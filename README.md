@@ -22,17 +22,19 @@ This GUI application logs into your Instagram account, fetches your follower and
 
 There are two ways to use this tool:
 
-1.  **Download the Executable (Recommended for most users):**
-    *   Go to the [Releases page](https://github.com/agopalareddy/instagram-unfollow-checker/releases/tag/v2.1.0) of this repository.
-    *   Download the `.exe` file (or the appropriate executable for your OS if others are provided).
-    *   Place the downloaded executable in a folder of your choice.
+1.  **Download the Application (Recommended for most users):**
+    *   Go to the [**Releases page**](https://github.com/agopalareddy/instagram-unfollow-checker/releases) of this repository.
+    *   Find the latest release.
+    *   Under "Assets", download the appropriate `.zip` file for your operating system (Windows, macOS, or Linux).
+    *   Unzip the downloaded file.
+    *   Run the executable file found inside the unzipped folder (e.g., `main.exe` on Windows, `main` on macOS/Linux).
     *   No further installation (like Python or dependencies) is needed.
 
 2.  **Run from Source (For developers):**
     *   **Clone the repository:**
         ```bash
-        git clone <repository-url> # Replace <repository-url>
-        cd <repository-directory>
+        git clone https://github.com/agopalareddy/instagram-unfollow-checker.git
+        cd instagram-unfollow-checker
         ```
     *   **Install dependencies:**
         ```bash
@@ -41,8 +43,8 @@ There are two ways to use this tool:
 
 ## Usage
 
-1.  **If using the Executable:**
-    *   Double-click the downloaded application file (`.exe` on Windows).
+1.  **If using the Downloaded Application:**
+    *   Double-click the executable file (e.g., `main.exe` on Windows, `main` on macOS/Linux) that you extracted from the downloaded `.zip` file.
 
 2.  **If running from Source:**
     *   Run the script from your terminal:
