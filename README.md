@@ -30,6 +30,16 @@ There are two ways to use this tool:
     *   Run the executable file found inside the unzipped folder (e.g., `main.exe` on Windows, `main` on macOS/Linux).
     *   No further installation (like Python or dependencies) is needed.
 
+    **macOS Users - Important Note:**
+    Due to macOS security features (Gatekeeper), you might need to take an extra step the first time you run the application:
+    1.  Right-click (or Control-click) the `main` application file.
+    2.  Select "Open" from the menu.
+    3.  You might see a warning saying the app is from an unidentified developer. Click "Open" again in this warning dialog.
+    4.  If you don't see the "Open" option or the warning doesn't allow opening, go to **System Settings** > **Privacy & Security**.
+    5.  Scroll down to the "Security" section.
+    6.  You should see a message about the blocked application (`main`). Click the "**Open Anyway**" button next to it. You might need to enter your administrator password.
+    7.  After doing this once, you should be able to open the application normally by double-clicking it in the future.
+
 2.  **Run from Source (For developers):**
     *   **Clone the repository:**
         ```bash
@@ -67,6 +77,12 @@ There are two ways to use this tool:
 ## Output File
 
 The `not_following_back.txt` file will be created or updated in the same directory where you run the application. It contains a list of Instagram profile URLs, one per line, for the accounts you follow that do not follow you back.
+
+## Troubleshooting
+
+*   **"401 Unauthorized" / "Please wait a few minutes" Error:** If you see an error message mentioning "401 Unauthorized" and "Please wait a few minutes", this means Instagram has temporarily limited requests from your account or session. This often happens when fetching large lists or after recent logins. Please wait some time (minutes to hours) and try running the application again. Using the saved session file might help reduce the frequency of this error.
+*   **Invalid Session:** If the application asks for your password even though a session file exists, it means the saved session has expired or been invalidated by Instagram. Simply enter your password to log in again.
+*   **Other Errors:** Ensure you have a stable internet connection. If you encounter other errors, especially after updating the application, consider deleting the existing `<username>.session` file and logging in fresh.
 
 ## Data Safety and Privacy
 

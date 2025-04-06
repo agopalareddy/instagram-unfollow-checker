@@ -225,43 +225,72 @@ class InstagramApp(ctk.CTk):
 
             # --- Fetching Data --- (Only if login or session load was successful)
             if logged_in:
-                self.log_message("Fetching profile...")
-                profile = instaloader.Profile.from_username(L.context, username)
+                try:
+                    self.log_message("Fetching profile...")
+                    profile = instaloader.Profile.from_username(L.context, username)
 
-                self.log_message("Fetching followers (this may take time)...")
-                followers = set(p.username for p in profile.get_followers())
-                self.log_message(f"Fetched {len(followers)} followers.")
+                    self.log_message("Fetching followers (this may take time)...")
+                    followers = set(p.username for p in profile.get_followers())
+                    self.log_message(f"Fetched {len(followers)} followers.")
 
-                self.log_message("Fetching followees (this may take time)...")
-                followees = set(p.username for p in profile.get_followees())
-                self.log_message(f"Fetched {len(followees)} followees.")
+                    self.log_message("Fetching followees (this may take time)...")
+                    followees = set(p.username for p in profile.get_followees())
+                    self.log_message(f"Fetched {len(followees)} followees.")
 
-                not_following_back = sorted(list(followees - followers))
-                output_filename = "not_following_back.txt"
+                    not_following_back = sorted(list(followees - followers))
+                    output_filename = "not_following_back.txt"
 
-                self.log_message("\n--- Results ---")
-                if not_following_back:
-                    self.log_message(f"Found {len(not_following_back)} accounts you follow that don't follow back:")
-                    with open(output_filename, 'w') as f:
-                        for user in not_following_back:
-                            profile_url = f"https://www.instagram.com/{user}/"
-                            self.log_message(f"- {user}")
-                            f.write(profile_url + "\n")
-                    self.log_message(f"\nFull list saved to {output_filename}")
-                else:
-                    self.log_message("Everyone you follow follows you back!")
-                    open(output_filename, 'w').close()
-                    self.log_message(f"Cleared/Created file: {output_filename}")
+                    self.log_message("\n--- Results ---")
+                    if not_following_back:
+                        self.log_message(f"Found {len(not_following_back)} accounts you follow that don't follow back:")
+                        with open(output_filename, 'w') as f:
+                            for user in not_following_back:
+                                profile_url = f"https://www.instagram.com/{user}/"
+                                self.log_message(f"- {user}")
+                                f.write(profile_url + "\n")
+                        self.log_message(f"\nFull list saved to {output_filename}")
+                    else:
+                        self.log_message("Everyone you follow follows you back!")
+                        open(output_filename, 'w').close()
+                        self.log_message(f"Cleared/Created file: {output_filename}")
 
-                self.log_message("\nCheck complete.")
+                    self.log_message("\nCheck complete.")
+
+                # Catch the specific rate-limit error
+                except instaloader.exceptions.ConnectionException as e_conn:
+                    if "401 Unauthorized" in str(e_conn) and "Please wait a few minutes" in str(e_conn):
+                        self.log_message("\nError: Instagram is temporarily limiting requests from this session.")
+                        self.log_message("Please wait a few minutes (or longer) and try again.")
+                        self.log_message("Using the session file (if available) might help.")
+                    else:
+                        # Re-raise other connection errors
+                        self.log_message(f"\nConnection Error: {e_conn}")
+                        self.log_message("Check your internet connection.")
+                        # Optionally log traceback for unexpected connection errors
+                        # import traceback
+                        # self.log_message(traceback.format_exc())
 
         except Exception as e_main:
             self.log_message(f"\nAn unexpected error occurred: {e_main}")
             import traceback
             self.log_message(traceback.format_exc())
         finally:
-             if 'logged_in' not in locals() or logged_in or not session_load_attempted:
-                self.after(0, self.set_ui_state, "normal")
+            # Ensure UI is re-enabled unless specific errors occurred that need user action
+            # (Password prompt already handled inside login logic)
+            # If logged_in is False after a session attempt, it means session failed and password was requested.
+            # If logged_in is False after a password attempt, login failed.
+            # If logged_in is True, the try/except block for fetching handles UI enabling.
+
+            # Re-enable UI if login failed or if fetch completed/failed cleanly
+            # Only skip re-enabling if password prompt is active due to session failure
+            ui_needs_reenable = True
+            if not logged_in and session_load_attempted:
+                # Check if password field is enabled (meaning prompt is active)
+                if self.password_entry.cget("state") == "normal":
+                    ui_needs_reenable = False # Don't re-enable if waiting for password
+
+            if ui_needs_reenable:
+                 self.after(0, self.set_ui_state, "normal")
 
 if __name__ == "__main__":
     app = InstagramApp()
